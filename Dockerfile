@@ -25,7 +25,8 @@ LABEL org.opencontainers.image.title="bdwyertech/ecr-proxy" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.build-date=$BUILD_DATE
 
-RUN apk add gettext openssl
+RUN apk add gettext openssl \
+    && mkdir -p /var/cache/nginx
 
 ADD /docker-manifest/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 ADD /docker-manifest/app.conf /etc/nginx/conf.d/default.conf
