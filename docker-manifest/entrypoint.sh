@@ -4,8 +4,9 @@
 
 envsubst '\$RESOLVER \$AWS_ACCOUNT \$AWS_REGION' < /etc/nginx/conf.d/default.conf | tee /etc/nginx/conf.d/default.conf
 
-# Passthrough
-echo "$@"
-# exec "$@"
+# Create SSL Certificate
+mkdir -p /etc/nginx/ssl
+openssl ecparam -genkey -name secp384r1 | openssl ec -out /etc/nginx/ssl/key.pem 2>/dev/null
+openssl req -new -x509 -key /etc/nginx/ssl/key.pem -out /etc/nginx/ssl/cert.pem -days 3650 -subj "/CN=docker-ecr-proxy"
 
 /usr/local/openresty/bin/openresty -g 'daemon off;'

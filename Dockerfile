@@ -7,7 +7,25 @@ FROM openresty/openresty:alpine
 
 COPY --from=ecr-login /code/ecr-login /usr/local/bin/.
 
-RUN apk add gettext
+ARG BUILD_DATE
+ARG VCS_REF
+
+LABEL org.opencontainers.image.title="bdwyertech/ecr-proxy" \
+      org.opencontainers.image.version=$C7N_VERSION \
+      org.opencontainers.image.description="For using ECR to serve public images" \
+      org.opencontainers.image.authors="Brian Dwyer <bdwyertech@github.com>" \
+      org.opencontainers.image.url="https://hub.docker.com/r/bdwyertech/ecr-proxy" \
+      org.opencontainers.image.source="https://github.com/bdwyertech/docker-ecr-proxy.git" \
+      org.opencontainers.image.revision=$VCS_REF \
+      org.opencontainers.image.created=$BUILD_DATE \
+      org.label-schema.name="bdwyertech/ecr-proxy" \
+      org.label-schema.description="For using ECR to serve public images" \
+      org.label-schema.url="https://hub.docker.com/r/bdwyertech/ecr-proxy" \
+      org.label-schema.vcs-url="https://github.com/bdwyertech/docker-ecr-proxy.git" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.build-date=$BUILD_DATE
+
+RUN apk add gettext openssl
 
 ADD /docker-manifest/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 ADD /docker-manifest/app.conf /etc/nginx/conf.d/default.conf
