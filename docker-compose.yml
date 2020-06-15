@@ -1,0 +1,14 @@
+version: "3"
+services:
+  openresty:
+    build: ./
+    environment:
+      - AWS_REGION
+      - AWS_ACCOUNT
+      - RESOLVER
+    ports:
+      - "80:80"
+    volumes:
+      # - ./docker-manifest/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      # - ./docker-manifest/app.conf:/etc/nginx/conf.d/default.conf
+      - ~/.aws:/.aws:ro
