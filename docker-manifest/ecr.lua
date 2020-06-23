@@ -40,7 +40,7 @@ else
     ngx.header.content_type = "application/json; charset=utf-8"
     ngx.status = ngx.HTTP_NOT_FOUND
     -- Build Docker-Compatible Error Response
-    resp = {
+    local resp = {
         errors = {
             {
                 code = "NAME_UNKNOWN",
