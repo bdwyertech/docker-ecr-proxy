@@ -19,7 +19,7 @@ local function getToken()
     local ok, stdout, stderr, reason, status = shell.run(cmdString)
     if ok then
         local ecrToken = stdout
-        local ecrTokenTimeoutSeconds = 5
+        local ecrTokenTimeoutSeconds = 3600
         local succ, err, forcible = ngx.shared.ecr_tokens:set(ngx.var.aws_account or "default", ecrToken, ecrTokenTimeoutSeconds)
         if err then
             ngx.log(ngx.ERR, err)
