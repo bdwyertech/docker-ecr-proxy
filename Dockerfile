@@ -32,5 +32,7 @@ ADD /docker-manifest/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 ADD /docker-manifest/app.conf /etc/nginx/conf.d/default.conf
 ADD /docker-manifest/entrypoint.sh /usr/local/bin/entrypoint.sh
 
+ADD /docker-manifest/ecr.lua /usr/local/openresty/site/ecr.lua
+
 ENTRYPOINT /usr/local/bin/entrypoint.sh
 CMD ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]

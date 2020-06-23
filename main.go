@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 
@@ -9,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go/service/ecr"
 )
 
+var awsAccount = flag.String("account", "", "AWS Account (ECR Registry ID)")
+
 func main() {
+	flag.Parse()
+
 	// AWS Session
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		Config:            *aws.NewConfig().WithCredentialsChainVerboseErrors(true),
@@ -19,7 +24,11 @@ func main() {
 	// ECR Client
 	ecrclient := ecr.New(sess)
 
-	result, err := ecrclient.GetAuthorizationToken(&ecr.GetAuthorizationTokenInput{})
+	input := &ecr.GetAuthorizationTokenInput{}
+	if *awsAccount != "" {
+		input.RegistryIds = []*string{awsAccount}
+	}
+	result, err := ecrclient.GetAuthorizationToken(input)
 	if err != nil {
 		log.Fatal(err)
 	}
