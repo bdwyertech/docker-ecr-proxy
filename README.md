@@ -1,3 +1,9 @@
+### Optional Permissions
+You may or may not want people to be able to list tags and/or list all available repositories within an account.
+* List Image Tags - `ecr:ListImages` - `/v2/imageName/tags/list`
+* List Repositories - `ecr:DescribeRepositories` - `/v2/_catalog`
+  * NOTE: List Repositories only works for the account in which the proxy service is running.
+
 ### Cross-Account Access
 
 ```json
@@ -13,7 +19,8 @@
       "Action": [
         "ecr:BatchCheckLayerAvailability",
         "ecr:BatchGetImage",
-        "ecr:GetDownloadUrlForLayer"
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:ListImages"
       ]
     }
   ]
