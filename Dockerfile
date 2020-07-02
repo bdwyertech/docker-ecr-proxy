@@ -30,6 +30,7 @@ RUN apk add gettext openssl \
 
 ADD /docker-manifest/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 ADD /docker-manifest/app.conf /etc/nginx/conf.d/default.conf
+ADD /docker-manifest/log_format.conf /etc/nginx/conf.d/010_log_format.conf
 ADD /docker-manifest/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ADD /docker-manifest/ecr.lua /usr/local/openresty/site/ecr.lua
