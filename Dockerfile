@@ -1,4 +1,4 @@
-FROM golang:1.14-alpine as ecr-login
+FROM golang:1.15-alpine as ecr-login
 WORKDIR /code
 COPY . .
 RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build .

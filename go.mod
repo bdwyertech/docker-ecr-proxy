@@ -1,5 +1,5 @@
 module ecr-login
 
-go 1.14
+go 1.15
 
-require github.com/aws/aws-sdk-go v1.32.1
+require github.com/aws/aws-sdk-go v1.34.8
