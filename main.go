@@ -1,9 +1,17 @@
+// Encoding: UTF-8
+//
+// AWS ECR Proxy
+//
+// Copyright © 2020 Brian Dwyer - Intelligent Digital Services
+//
+
 package main
 
 import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -14,6 +22,11 @@ var awsAccount = flag.String("account", "", "AWS Account (ECR Registry ID)")
 
 func main() {
 	flag.Parse()
+
+	if versionFlag {
+		showVersion()
+		os.Exit(0)
+	}
 
 	// AWS Session
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
