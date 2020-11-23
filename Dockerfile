@@ -1,7 +1,9 @@
 FROM golang:1.15-alpine as ecr-login
 WORKDIR /code
+ARG BUILD_DATE
+ARG VCS_REF
 COPY . .
-RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build .
+RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -ldflags "-X main.GitCommit=$VCS_REF -X main.ReleaseDate=$BUILD_DATE" .
 
 FROM openresty/openresty:alpine
 
