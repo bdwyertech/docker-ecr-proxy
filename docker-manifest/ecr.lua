@@ -13,9 +13,11 @@ local function getToken()
     -- Retrieve a Fresh Token
     local shell = require("resty.shell")
     local cmdString = "/usr/local/bin/ecr-login"
-    if ngx.var.aws_account then
-        cmdString = cmdString .. string.format(" -account %s", ngx.var.aws_account)
-    end
+    -- ECR Tokens are valid for all accounts
+    -- https://github.com/aws/aws-sdk-go/blame/09c532959025e22338b990f2f65c4efc6ef7159e/service/ecr/api.go#L5181
+    -- if ngx.var.aws_account then
+    --     cmdString = cmdString .. string.format(" -account %s", ngx.var.aws_account)
+    -- end
     local ok, stdout, stderr, reason, status = shell.run(cmdString)
     if ok then
         local ecrToken = stdout
