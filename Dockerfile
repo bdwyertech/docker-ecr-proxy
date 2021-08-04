@@ -3,7 +3,7 @@ WORKDIR /code
 ARG BUILD_DATE
 ARG VCS_REF
 COPY . .
-RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -ldflags "-s -w -X main.GitCommit=$VCS_REF -X main.ReleaseDate=$BUILD_DATE" .
+RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimpath -ldflags "-s -w -X main.GitCommit=$VCS_REF -X main.ReleaseDate=$BUILD_DATE" .
 
 FROM openresty/openresty:alpine
 
