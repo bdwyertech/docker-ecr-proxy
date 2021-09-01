@@ -2,7 +2,7 @@
 //
 // AWS ECR Proxy
 //
-// Copyright © 2020 Brian Dwyer - Intelligent Digital Services
+// Copyright © 2021 Brian Dwyer - Intelligent Digital Services
 //
 
 package main
@@ -27,7 +27,7 @@ func main() {
 	}
 
 	// AWS Session
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+	cfg, err := config.LoadDefaultConfig(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -35,7 +35,7 @@ func main() {
 	// ECR Client
 	ecrclient := ecr.NewFromConfig(cfg)
 
-	result, err := ecrclient.GetAuthorizationToken(context.TODO(), &ecr.GetAuthorizationTokenInput{})
+	result, err := ecrclient.GetAuthorizationToken(context.Background(), &ecr.GetAuthorizationTokenInput{})
 	if err != nil {
 		log.Fatal(err)
 	}
