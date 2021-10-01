@@ -11,7 +11,7 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Creates a repository. For more information, see Amazon ECR Repositories
+// Creates a repository. For more information, see Amazon ECR repositories
 // (https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html) in
 // the Amazon Elastic Container Registry User Guide.
 func (c *Client) CreateRepository(ctx context.Context, params *CreateRepositoryInput, optFns ...func(*Options)) (*CreateRepositoryOutput, error) {
@@ -52,6 +52,10 @@ type CreateRepositoryInput struct {
 	// overwritten. If IMMUTABLE is specified, all image tags within the repository
 	// will be immutable which will prevent them from being overwritten.
 	ImageTagMutability types.ImageTagMutability
+
+	// The AWS account ID associated with the registry to create the repository. If you
+	// do not specify a registry, the default registry is assumed.
+	RegistryId *string
 
 	// The metadata that you apply to the repository to help you categorize and
 	// organize them. Each tag consists of a key and an optional value, both of which
