@@ -2,10 +2,14 @@
 # Magic to Provision the Container
 # Brian Dwyer - Intelligent Digital Services
 
-# Default to the AWS Resolver
-export RESOLVER=${RESOLVER:-'169.254.169.253'}
+export AWS_REGION="${AWS_REGION:-$AWS_DEFAULT_REGION}"
 
-envsubst '\$RESOLVER \$AWS_ACCOUNT \$AWS_REGION' < /etc/nginx/conf.d/default.conf | tee /etc/nginx/conf.d/default.conf
+# Default to the AWS Resolver
+export RESOLVER="${RESOLVER:-'169.254.169.253'}"
+
+envsubst '\$RESOLVER \$AWS_ACCOUNT \$AWS_REGION' < /etc/nginx/conf.d/default.conf > /tmp/config && mv /tmp/config /etc/nginx/conf.d/default.conf
+
+cat /etc/nginx/conf.d/default.conf
 
 # Create SSL Certificate
 if [ ! -f /etc/nginx/ssl/cert.pem ]; then
