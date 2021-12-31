@@ -7,7 +7,7 @@ services:
       - AWS_ACCOUNT
       - RESOLVER
     ports:
-      - "80:8080"
+      - "8080:8080"
       - "8443:8443"
     volumes:
       # - ./docker-manifest/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
