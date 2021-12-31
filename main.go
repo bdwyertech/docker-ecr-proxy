@@ -29,7 +29,7 @@ func main() {
 	// AWS Session
 	cfg, err := config.LoadDefaultConfig(context.Background())
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	// ECR Client
