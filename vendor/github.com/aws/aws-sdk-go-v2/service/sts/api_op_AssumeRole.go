@@ -273,7 +273,7 @@ type AssumeRoleInput struct {
 	// session. If you pass a session tag with the same key as an inherited tag, the
 	// operation fails. To view the inherited tags for a session, see the CloudTrail
 	// logs. For more information, see Viewing Session Tags in CloudTrail
-	// (https://docs.aws.amazon.com/IAM/latest/UserGuide/session-tags.html#id_session-tags_ctlogs)
+	// (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_session-tags.html#id_session-tags_ctlogs)
 	// in the IAM User Guide.
 	Tags []types.Tag
 
@@ -414,4 +414,28 @@ func newServiceMetadataMiddleware_opAssumeRole(region string) *awsmiddleware.Reg
 		SigningName:   "sts",
 		OperationName: "AssumeRole",
 	}
+}
+
+// PresignAssumeRole is used to generate a presigned HTTP Request which contains
+// presigned URL, signed headers and HTTP method used.
+func (c *PresignClient) PresignAssumeRole(ctx context.Context, params *AssumeRoleInput, optFns ...func(*PresignOptions)) (*v4.PresignedHTTPRequest, error) {
+	if params == nil {
+		params = &AssumeRoleInput{}
+	}
+	options := c.options.copy()
+	for _, fn := range optFns {
+		fn(&options)
+	}
+	clientOptFns := append(options.ClientOptions, withNopHTTPClientAPIOption)
+
+	result, _, err := c.client.invokeOperation(ctx, "AssumeRole", params, clientOptFns,
+		c.client.addOperationAssumeRoleMiddlewares,
+		presignConverter(options).convertToPresignMiddleware,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	out := result.(*v4.PresignedHTTPRequest)
+	return out, nil
 }
