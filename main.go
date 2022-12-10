@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
@@ -27,7 +28,9 @@ func main() {
 	}
 
 	// AWS Session
-	cfg, err := config.LoadDefaultConfig(context.Background())
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	defer cancel()
+	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,7 +38,7 @@ func main() {
 	// ECR Client
 	ecrclient := ecr.NewFromConfig(cfg)
 
-	result, err := ecrclient.GetAuthorizationToken(context.Background(), &ecr.GetAuthorizationTokenInput{})
+	result, err := ecrclient.GetAuthorizationToken(ctx, &ecr.GetAuthorizationTokenInput{})
 	if err != nil {
 		log.Fatal(err)
 	}
