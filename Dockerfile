@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine as ecr-login
+FROM golang:1.20-alpine as ecr-login
 WORKDIR /code
 ARG BUILD_DATE
 ARG VCS_REF
