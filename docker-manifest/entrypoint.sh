@@ -2,7 +2,9 @@
 # Magic to Provision the Container
 # Brian Dwyer - Intelligent Digital Services
 
-export AWS_REGION="${AWS_REGION:-$AWS_DEFAULT_REGION}"
+export AWS_REGION="${AWS_REGION:-${AWS_DEFAULT_REGION:-'us-east-1'}}"
+
+export AWS_ACCOUNT="${AWS_ACCOUNT:-$(/usr/local/bin/ecr-login -account)}"
 
 # Default to the AWS Resolver
 export RESOLVER="${RESOLVER:-'169.254.169.253'}"

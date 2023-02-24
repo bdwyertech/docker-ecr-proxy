@@ -17,7 +17,14 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 )
+
+var accountFlag bool
+
+func init() {
+	flag.BoolVar(&accountFlag, "account", false, "Display AWS Account")
+}
 
 func main() {
 	flag.Parse()
@@ -35,13 +42,25 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// ECR Client
-	ecrclient := ecr.NewFromConfig(cfg)
+	// Emit AWS Account ID
+	if accountFlag {
+		result, err := sts.NewFromConfig(cfg).GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
+		if err != nil {
+			log.Fatal(err)
+		}
+		if _, err = fmt.Println(*result.Account); err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
 
-	result, err := ecrclient.GetAuthorizationToken(ctx, &ecr.GetAuthorizationTokenInput{})
+	// ECR Client
+	result, err := ecr.NewFromConfig(cfg).GetAuthorizationToken(ctx, &ecr.GetAuthorizationTokenInput{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf(*result.AuthorizationData[0].AuthorizationToken)
+	if _, err = fmt.Println(*result.AuthorizationData[0].AuthorizationToken); err != nil {
+		log.Fatal(err)
+	}
 }
