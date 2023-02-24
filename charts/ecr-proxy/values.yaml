@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: bdwyertech/ecr-proxy
+  repository: ghcr.io/bdwyertech/ecr-proxy
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ''
@@ -13,8 +13,6 @@ image:
 imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
-
-aws_account: '123456789012'
 
 serviceAccount:
   # Specifies whether a service account should be created
