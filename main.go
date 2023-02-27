@@ -60,7 +60,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if _, err = fmt.Println(*result.AuthorizationData[0].AuthorizationToken); err != nil {
+	if _, err = fmt.Print(*result.AuthorizationData[0].AuthorizationToken); err != nil {
 		log.Fatal(err)
 	}
 }
