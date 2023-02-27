@@ -84,7 +84,7 @@ jobs:
 
       - name: Publish Helm chart to GHCR
         run: |
-          helm package charts/ecr-proxy --app-version ${GITHUB_REF#refs/tags/}
+          helm package charts/ecr-proxy --app-version ${GITHUB_REF#refs/tags/} --version ${GITHUB_REF#refs/tags/v}
           helm push ecr-proxy-*.tgz oci://ghcr.io/bdwyertech/charts
           rm ecr-proxy-*.tgz
       - name: Sign Images
