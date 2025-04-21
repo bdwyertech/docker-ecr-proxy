@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Install Cosign
-        uses: sigstore/cosign-installer@v2.8.1
+        uses: sigstore/cosign-installer@v3.8.1
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -70,8 +70,9 @@ jobs:
 
       - name: Build and push Docker image
         id: build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
+          platforms: linux/amd64,linux/arm64
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -80,7 +81,7 @@ jobs:
       - name: Setup Helm
         uses: ./.github/actions/helm
         with:
-          version: 3.10.2
+          version: 3.17.3
 
       - name: Publish Helm chart to GHCR
         run: |
@@ -88,8 +89,15 @@ jobs:
           helm push ecr-proxy-*.tgz oci://ghcr.io/bdwyertech/charts
           rm ecr-proxy-*.tgz
       - name: Sign Images
-        env:
-          COSIGN_EXPERIMENTAL: 1
         run: |
-          cosign sign $GHCR_IMAGE_NAME@${{ steps.build.outputs.digest }}
-          cosign sign ghcr.io/bdwyertech/charts/ecr-proxy:${GITHUB_REF#refs/tags/v}
+          cosign sign --yes \
+            --annotations="repo=${{ github.repository }}" \
+            --annotations="workflow=${{ github.workflow }}" \
+            --annotations="ref=${{ github.ref }}" \
+            $GHCR_IMAGE_NAME@${{ steps.build.outputs.digest }}
+          
+          cosign sign --yes \
+            --annotations="repo=${{ github.repository }}" \
+            --annotations="workflow=${{ github.workflow }}" \
+            --annotations="ref=${{ github.ref }}" \
+            ghcr.io/bdwyertech/charts/ecr-proxy:${GITHUB_REF#refs/tags/v}
