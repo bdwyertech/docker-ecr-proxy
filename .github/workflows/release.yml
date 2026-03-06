@@ -89,7 +89,7 @@ jobs:
           version: 3.17.3
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.34.2
         with:
           image-ref: ${{ env.GHCR_IMAGE_NAME }}:${{ steps.params.outputs.date }}--${{ steps.params.outputs.sha_short }}
           format: 'sarif'
