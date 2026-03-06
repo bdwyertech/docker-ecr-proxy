@@ -103,10 +103,14 @@ jobs:
           category: 'container-security'
 
       - name: Publish Helm chart to GHCR
+        id: chart
         run: |
           helm package charts/ecr-proxy --app-version ${GITHUB_REF#refs/tags/} --version ${GITHUB_REF#refs/tags/v}
           helm push ecr-proxy-*.tgz oci://ghcr.io/bdwyertech/charts
+          DIGEST=$(helm push ecr-proxy-*.tgz oci://ghcr.io/bdwyertech/charts | sed -n 's/^Digest: //p')
+          echo "digest=$DIGEST" >> "$GITHUB_OUTPUT"
           rm ecr-proxy-*.tgz
+
       - name: Sign Images
         run: |
           cosign sign --yes \
@@ -119,4 +123,4 @@ jobs:
             --annotations="repo=${{ github.repository }}" \
             --annotations="workflow=${{ github.workflow }}" \
             --annotations="ref=${{ github.ref }}" \
-            ghcr.io/bdwyertech/charts/ecr-proxy:${GITHUB_REF#refs/tags/v}
+            ghcr.io/bdwyertech/charts/ecr-proxy:${GITHUB_REF#refs/tags/v}@${{ steps.chart.outputs.digest }}
