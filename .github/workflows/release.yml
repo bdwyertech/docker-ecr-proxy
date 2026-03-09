@@ -106,8 +106,7 @@ jobs:
         id: chart
         run: |
           helm package charts/ecr-proxy --app-version ${GITHUB_REF#refs/tags/} --version ${GITHUB_REF#refs/tags/v}
-          helm push ecr-proxy-*.tgz oci://ghcr.io/bdwyertech/charts
-          DIGEST=$(helm push ecr-proxy-*.tgz oci://ghcr.io/bdwyertech/charts | sed -n 's/^Digest: //p')
+          DIGEST=$(helm push ecr-proxy-*.tgz oci://ghcr.io/bdwyertech/charts 2>&1 | sed -n 's/^Digest: //p')
           echo "digest=$DIGEST" >> "$GITHUB_OUTPUT"
           rm ecr-proxy-*.tgz
 
