@@ -2,7 +2,7 @@
 //
 // AWS ECR Proxy
 //
-// Copyright © 2023 Brian Dwyer - Intelligent Digital Services
+// Copyright © 2026 Brian Dwyer - Intelligent Digital Services
 //
 
 package main
